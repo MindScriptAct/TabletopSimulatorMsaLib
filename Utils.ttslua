@@ -1,0 +1,31 @@
+--#include Core
+
+function FreazeObject(id)
+  local obj = getObjectFromGUID(id);
+  if obj ~= nil then
+    obj.interactable = false;
+    obj.tooltip = false;
+  end
+end
+
+
+function PrintTable(table)
+    for k, v in pairs(table) do
+        print(k .. " - " .. v[1] .. " - " .. v[2] .. " - " .. v[3])
+    end
+end
+
+function PrintObject(printObj)
+    print("All data about : ", printObj)
+    local type = type(printObj)
+    if type == "table" then
+        for k, v in pairs(printObj) do
+            print(k .. " : " .. v)
+        end
+    end
+end
+
+
+function PrintItAll()
+  for key,value in pairs(_G) do print(key,value) end
+end
