@@ -5,3 +5,4 @@
 #include Utils
 #include Gui\UiManager
 #include Gui\Button
+#include Gui\SimpleButton

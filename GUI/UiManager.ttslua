@@ -1,22 +1,28 @@
+local UiManager = {} -- the table representing the class, which will double as the metatable for the instances
+UiManager.__index = UiManager -- failed table lookups on the instances should fallback to the class table, to get methods
+
+setmetatable(UiManager, {
+  __call = function (cls, defaultAttachObject) return cls.New(defaultAttachObject) end
+})
+
 -- Meta class
-UiManager = {
-  defaultAttachObject = nil,
-  defaultButtonStyle = nil,
-  _buttonStyleLibrary = nil -- private
-}
+--local UiManager = {
+--  defaultAttachObject = nil,
+--  _buttonStyleLibrary = nil -- private
+--}
 
 -- Derived class method new
 
-function UiManager:New(o, defaultAttachObject)
-   o = o or {};
-   setmetatable(o, self);
-   self.__index = self;
+function UiManager:New(defaultAttachObject)
+  local self = setmetatable({}, UiManager)
 
-   self.defaultAttachObject = Global;
-   self.defaultButtonStyle = self.CloneButtonTable();
-   self._buttonStyleLibrary = {};
-   if defaultAttachObj ~= nil then self.defaultAttachObject = defaultAttachObject; end
-   return o
+  self.defaultAttachObject = Global;
+  if defaultAttachObject ~= nil then self.defaultAttachObject = defaultAttachObject; end
+  self._buttonStyleLibrary = {
+     default = self.CloneButtonTable()
+  };
+  self.test = 123
+  return self
 end
 
 -- Derived class method printArea
@@ -28,19 +34,29 @@ function UiManager:CreateButton(attachTo, label, functionName, functionObject)
     attachTo = GetObject(attachTo)
   end
 
+print(self)
+print(attachTo)
+print(functionName)
+print(functionObject)
+print(self._buttonStyleLibrary)
+print(self.defaultAttachObject)
+print(self._buttonStyleLibrary['default'].position[0])
+print(self.test)
   --
 
-  local allButtons = attachTo.getButtons()
-  PrintObject("buttons", allButtons)
+  --local allButtons = attachTo.getButtons()
+  --PrintObject("buttons", allButtons)
 
-  return Button:New(nil, attachTo, self.defaultButtonStyle)
+
+
+  --return Button(attachTo, self._buttonStyleLibrary['default'])
 end
 
 function UiManager:AddButtonStyle(styleName, style)
   _buttonStyleLibrary[styleName] = style;
 end
 
-function UiManager:CloneButtonTable()
+function UiManager.CloneButtonTable()
   local buttonTable = {
     label = "[Button]",
     function_owner = Global,

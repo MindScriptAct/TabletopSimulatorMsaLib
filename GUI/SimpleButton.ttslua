@@ -1,0 +1,23 @@
+local SimpleButton = {} -- the table representing the class, which will double as the metatable for the instances
+SimpleButton.__index = SimpleButton -- failed table lookups on the instances should fallback to the class table, to get methods
+
+setmetatable(SimpleButton, {
+  __call = function (cls, ...)
+    return cls.new(...)
+  end,
+})
+
+-- syntax equivalent to "MyClass.new = function..."
+function SimpleButton.new(init)
+  local self = setmetatable({}, SimpleButton)
+  self.value = init
+  return self
+end
+
+function SimpleButton.set_value(self, newval)
+  self.value = newval
+end
+
+function SimpleButton.get_value(self)
+  return self.value
+end

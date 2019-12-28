@@ -31,16 +31,17 @@ TestObjects = {
 function onLoad()
   print("Do stuff.");
 
-  local baseManager = UiManager:New()
+  --local baseManager = UiManager()
 
   --baseManager.defaultButtonStyle.label = "[Button]";
   --baseManager.defaultButtonStyle.function_owner = Global;
   --baseManager.defaultButtonStyle.click_function = "_DebugClick";
   --baseManager.defaultButtonStyle.font_size = 200;
-  baseManager.defaultButtonStyle.width = 500;
-  baseManager.defaultButtonStyle.height = 300;
-  baseManager.defaultButtonStyle.position = {0, 1, -2};
-  baseManager.defaultButtonStyle.rotation = {0,180, 0};
+  --baseManager._buttonStyleLibrary['default'].width = 1000;
+  --baseManager._buttonStyleLibrary['default'].height = 300;
+  --baseManager._buttonStyleLibrary['default'].position = {0, 1, -2};
+
+  --baseManager._buttonStyleLibrary['default'].rotation = {0,180, 0};
   --baseManager.defaultButtonStyle.scale = {1, 1, 1};
   --baseManager.defaultButtonStyle.color = {1, 1, 1};
   --baseManager.defaultButtonStyle.font_color = {0, 0, 0};
@@ -48,12 +49,38 @@ function onLoad()
   --baseManager.defaultButtonStyle.press_color = nil;
   --baseManager.defaultButtonStyle.tooltip = nil;
 
-  for key, value in pairs(TestObjects) do
+  --for key, value in pairs(TestObjects) do
     --baseManager:CreateButton(value)
-  end
+  --end
 
-  local myButton = baseManager:CreateButton(TestObjects.Cube, "Button label", "ButtonTest", Global)
-  myButton.DoStuff();
+  --local myButton = baseManager:CreateButton(TestObjects.Cube, "Button label", "ButtonTest", Global)
+  --myButton.DoStuff();
+  --myButton.Scale(10, 10, 10, 0);
+
+
+  local buttonTable = {
+    label = "[Button]",
+    function_owner = Global,
+    click_function = "printHello",
+    font_size = 500,
+    width = 1000,
+    height = 300,
+    position = {0, 2, 0},
+    rotation = {0, 0, 0},
+    scale = {1, 1, 1},
+    color = {1, 1, 1},
+    font_color = {0, 0, 0},
+    hover_color = nil,
+    press_color = nil,
+    tooltip = nil
+  };
+
+
+  local i = SimpleButton(5)
+  -- tbl:name(arg) is a shortcut for tbl.name(tbl, arg), except tbl is evaluated only once
+  print(i:get_value()) --> 5
+  i:set_value(6)
+  print(i:get_value()) --> 6
 
 end
 
