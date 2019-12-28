@@ -1,0 +1,67 @@
+#include MsaLib
+
+TestObjects = {
+  Cube = '9ce444',
+  Pawn = '73ff52',
+  Dice = '595020',
+  Marble = '1d182e',
+  Checker = 'f096c4',
+  GoPiece = '4e4ea6',
+  Chess = 'ff56c6',
+  Figure = 'd2a0f3',
+  Miniature = '0e2465',
+  Note = 'ca5096',
+  Deck = '62c739',
+  InfiniBag = 'f8c0a8',
+  SimpleBag = 'c50b3f',
+  Counter = 'e47bb0',
+  Bouwl = 'c4d7c8',
+  Board = '9e3d87',
+  Tile = 'ad7080',
+  Token = '567b6f',
+  Card = '7b25f9',
+  CustomMiniature = '9a8944'
+}
+
+
+
+--[[ Lua code. See documentation: https://api.tabletopsimulator.com/ --]]
+
+--[[ The onLoad event is called after the game save finishes loading. --]]
+function onLoad()
+  print("Do stuff.");
+
+  local baseManager = UiManager:New()
+
+  --baseManager.defaultButtonStyle.label = "[Button]";
+  --baseManager.defaultButtonStyle.function_owner = Global;
+  --baseManager.defaultButtonStyle.click_function = "_DebugClick";
+  --baseManager.defaultButtonStyle.font_size = 200;
+  baseManager.defaultButtonStyle.width = 500;
+  baseManager.defaultButtonStyle.height = 300;
+  baseManager.defaultButtonStyle.position = {0, 1, -2};
+  baseManager.defaultButtonStyle.rotation = {0,180, 0};
+  --baseManager.defaultButtonStyle.scale = {1, 1, 1};
+  --baseManager.defaultButtonStyle.color = {1, 1, 1};
+  --baseManager.defaultButtonStyle.font_color = {0, 0, 0};
+  --baseManager.defaultButtonStyle.hover_color = nil;
+  --baseManager.defaultButtonStyle.press_color = nil;
+  --baseManager.defaultButtonStyle.tooltip = nil;
+
+  for key, value in pairs(TestObjects) do
+    --baseManager:CreateButton(value)
+  end
+
+  local myButton = baseManager:CreateButton(TestObjects.Cube, "Button label", "ButtonTest", Global)
+  myButton.DoStuff();
+
+end
+
+function printHello()
+    print('Hello test!')
+end
+
+--[[ The onUpdate event is called once per frame. --]]
+function onUpdate()
+    --[[ print('onUpdate loop!') --]]
+end

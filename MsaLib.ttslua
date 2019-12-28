@@ -2,5 +2,6 @@
 --######### INCLUDES
 --############################
 #include Core
-#include SimpleUi
 #include Utils
+#include Gui\UiManager
+#include Gui\Button

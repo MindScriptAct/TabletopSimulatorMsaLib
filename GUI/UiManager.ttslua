@@ -1,0 +1,61 @@
+-- Meta class
+UiManager = {
+  defaultAttachObject = nil,
+  defaultButtonStyle = nil,
+  _buttonStyleLibrary = nil -- private
+}
+
+-- Derived class method new
+
+function UiManager:New(o, defaultAttachObject)
+   o = o or {};
+   setmetatable(o, self);
+   self.__index = self;
+
+   self.defaultAttachObject = Global;
+   self.defaultButtonStyle = self.CloneButtonTable();
+   self._buttonStyleLibrary = {};
+   if defaultAttachObj ~= nil then self.defaultAttachObject = defaultAttachObject; end
+   return o
+end
+
+-- Derived class method printArea
+
+function UiManager:CreateButton(attachTo, label, functionName, functionObject)
+  if attachTo == nil then PrintError("button attachTo can't be nil. (Send object or objectId)"); return; end
+
+  if (type(attachTo) == 'string') then
+    attachTo = GetObject(attachTo)
+  end
+
+  --
+
+  local allButtons = attachTo.getButtons()
+  PrintObject("buttons", allButtons)
+
+  return Button:New(nil, attachTo, self.defaultButtonStyle)
+end
+
+function UiManager:AddButtonStyle(styleName, style)
+  _buttonStyleLibrary[styleName] = style;
+end
+
+function UiManager:CloneButtonTable()
+  local buttonTable = {
+    label = "[Button]",
+    function_owner = Global,
+    click_function = "printHello",
+    font_size = 100,
+    width = 100,
+    height = 100,
+    position = {0, 0, 0},
+    rotation = {0, 0, 0},
+    scale = {1, 1, 1},
+    color = {1, 1, 1},
+    font_color = {0, 0, 0},
+    hover_color = nil,
+    press_color = nil,
+    tooltip = nil
+  };
+  return buttonTable;
+end

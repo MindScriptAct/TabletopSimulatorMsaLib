@@ -11,17 +11,22 @@ end
 
 function PrintTable(table)
     for k, v in pairs(table) do
-        print(k .. " - " .. v[1] .. " - " .. v[2] .. " - " .. v[3])
+        print(k , " - " , v[1] , " - " , v[2] , " - " , v[3])
     end
 end
 
-function PrintObject(printObj)
-    print("All data about : ", printObj)
-    local type = type(printObj)
+function PrintObject(name, obj, tab)
+    if tab == nil then tab = "" end
+    local type = type(obj)
     if type == "table" then
-        for k, v in pairs(printObj) do
-            print(k .. " : " .. v)
+        print(tab..name..":")
+        for key, value in pairs(obj) do
+          PrintObject(key, value, tab.."  ");
         end
+    elseif  type == "string" or type == "number" then
+      print(tab..name..":"..obj)
+    else
+      print(name.." not handled type:"..type)
     end
 end
 
