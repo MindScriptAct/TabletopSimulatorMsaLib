@@ -1,8 +1,6 @@
 function GetObject(id)
   local obj = getObjectFromGUID(id)
-  if obj == nil then
-    PrintError("Failed to find object with id: "..id)
-  end
+  if obj == nil then PrintError("Failed to find object with id: "..id) end
   return obj;
 end
 

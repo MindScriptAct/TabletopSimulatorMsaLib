@@ -1,77 +1,64 @@
-local UiManager = {} -- the table representing the class, which will double as the metatable for the instances
-UiManager.__index = UiManager -- failed table lookups on the instances should fallback to the class table, to get methods
+local UiManager = {}
+UiManager.__index = UiManager
+setmetatable(UiManager, {__call = function (cls, ...) return cls.New(...) end })
 
-setmetatable(UiManager, {
-  __call = function (cls, defaultAttachObject) return cls.New(defaultAttachObject) end
-})
+function UiManager:New()
+  if StaticUiManager ~= nil then return StaticUiManager end
 
--- Meta class
---local UiManager = {
---  defaultAttachObject = nil,
---  _buttonStyleLibrary = nil -- private
---}
-
--- Derived class method new
-
-function UiManager:New(defaultAttachObject)
   local self = setmetatable({}, UiManager)
-
-  self.defaultAttachObject = Global;
-  if defaultAttachObject ~= nil then self.defaultAttachObject = defaultAttachObject; end
   self._buttonStyleLibrary = {
-     default = self.CloneButtonTable()
-  };
-  self.test = 123
+    default = {
+        label = "[Button]",
+        function_owner = Global,
+        click_function = "_debugButtonClick",
+        font_size = 100,
+        width = 100,
+        height = 100,
+        position = {0, 0, 0},
+        rotation = {0, 0, 0},
+        scale = {10, 10, 10},
+        color = {1, 1, 1},
+        font_color = {0, 0, 0},
+        hover_color = nil,
+        press_color = nil,
+        tooltip = nil
+      }
+  }
+  StaticUiManager = self
   return self
 end
 
--- Derived class method printArea
+local StaticUiManager = UiManager()
+local StaticDefaultButtonStyle = "default"
 
-function UiManager:CreateButton(attachTo, label, functionName, functionObject)
-  if attachTo == nil then PrintError("button attachTo can't be nil. (Send object or objectId)"); return; end
-
-  if (type(attachTo) == 'string') then
-    attachTo = GetObject(attachTo)
-  end
-
-print(self)
-print(attachTo)
-print(functionName)
-print(functionObject)
-print(self._buttonStyleLibrary)
-print(self.defaultAttachObject)
-print(self._buttonStyleLibrary['default'].position[0])
-print(self.test)
-  --
-
-  --local allButtons = attachTo.getButtons()
-  --PrintObject("buttons", allButtons)
-
-
-
-  --return Button(attachTo, self._buttonStyleLibrary['default'])
+function UiManager:GetButtonStyle(styleName)
+  return self._buttonStyleLibrary[styleName]
 end
 
-function UiManager:AddButtonStyle(styleName, style)
-  _buttonStyleLibrary[styleName] = style;
+function UiManager:SetButtonStyle(styleName, styleTable)
+  self._buttonStyleLibrary[styleName] = styleTable
 end
 
-function UiManager.CloneButtonTable()
+
+function UiManager:CloneButtonTable(style)
+  if style == nil then style = StaticDefaultButtonStyle end
+  if type(style) == "string" then style = self:GetButtonStyle(style) end
   local buttonTable = {
-    label = "[Button]",
-    function_owner = Global,
-    click_function = "printHello",
-    font_size = 100,
-    width = 100,
-    height = 100,
-    position = {0, 0, 0},
-    rotation = {0, 0, 0},
-    scale = {1, 1, 1},
-    color = {1, 1, 1},
-    font_color = {0, 0, 0},
-    hover_color = nil,
-    press_color = nil,
-    tooltip = nil
+    label = style.label,
+    function_owner = style.function_owner,
+    click_function = style.click_function,
+    font_size = style.font_size,
+    width = style.width,
+    height = style.height,
+    tooltip = style.tooltip
   };
+  if style.position ~= nil then buttonTable.position = {style.position[1], style.position[2], style.position[3]} else  buttonTable.position = nil end
+  if style.rotation ~= nil then buttonTable.rotation = {style.rotation[1], style.rotation[2], style.rotation[3]} else  buttonTable.rotation = nil end
+  if style.scale ~= nil then buttonTable.scale = {style.scale[1], style.scale[2], style.scale[3]} else  buttonTable.scale = nil end
+  if style.color ~= nil then buttonTable.color = {style.color[1], style.color[2], style.color[3], style.color[4]} else  buttonTable.color = nil end
+  if style.font_color ~= nil then buttonTable.font_color = {style.font_color[1], style.font_color[2], style.font_color[3], style.font_color[4]} else  buttonTable.font_color = nil end
+  if style.hover_color ~= nil then buttonTable.hover_color = {style.hover_color[1], style.hover_color[2], style.hover_color[3], style.hover_color[4]} else  buttonTable.hover_color = nil end
+  if style.press_color ~= nil then buttonTable.press_color = {style.press_color[1], style.press_color[2], style.press_color[3], style.press_color[4]} else  buttonTable.press_color = nil end
+
   return buttonTable;
 end

@@ -23,8 +23,6 @@ TestObjects = {
   CustomMiniature = '9a8944'
 }
 
-
-
 --[[ Lua code. See documentation: https://api.tabletopsimulator.com/ --]]
 
 --[[ The onLoad event is called after the game save finishes loading. --]]
@@ -57,30 +55,45 @@ function onLoad()
   --myButton.DoStuff();
   --myButton.Scale(10, 10, 10, 0);
 
+  local uiManager = UiManager()
 
-  local buttonTable = {
-    label = "[Button 1]",
-    function_owner = Global,
-    click_function = "_debugButtonClick",
-    font_size = 100,
-    width = 100,
-    height = 100,
-    position = {0, 0, 0},
-    rotation = {0, 0, 0},
-    scale = {1, 1, 1},
-    color = {1, 1, 1},
-    font_color = {0, 0, 0},
-    hover_color = nil,
-    press_color = nil,
-    tooltip = nil
-  };
+  local defaultButtonStyle = uiManager:CloneButtonTable()
+  defaultButtonStyle.label = "[My Button!]"
+  defaultButtonStyle.function_owner = Global
+  defaultButtonStyle.click_function = "myFunction"
+  defaultButtonStyle.font_size = 200
+  defaultButtonStyle.width = 1200
+  defaultButtonStyle.height = 300
+  defaultButtonStyle.position = {0, 1, -2}
+  defaultButtonStyle.rotation = {0, 180, 0}
+  defaultButtonStyle.scale = {2, 2, 2}
+  defaultButtonStyle.color = {0.8, 0.8, 0.8}
+  defaultButtonStyle.font_color = {0, 0, 0}
+  defaultButtonStyle.hover_color = {0, 0, 1}
+  defaultButtonStyle.press_color = {0, 1, 0, 0.5}
+  defaultButtonStyle.tooltip = "my tooltip"
+
+  uiManager:SetButtonStyle(StaticDefaultButtonStyle, defaultButtonStyle)
+  --local tbl = uiManager:GetButtonStyle("default")
+  --print(tbl.label)
 
 
-  local testBtn = SimpleButton(5, GetObject(TestObjects.Cube), buttonTable)
+  --local testBtn = SimpleButton(GetObject(TestObjects.Cube), buttonTable)
+  local testBtn = SimpleButton(TestObjects.Cube)
+  --testBtn:test()
 
-  testBtn:test()
+local customButtonStyle = uiManager:CloneButtonTable(StaticDefaultButtonStyle)
+customButtonStyle.label = "<Custom Button!>"
+customButtonStyle.hover_color = {1, 0, 0}
+defaultButtonStyle.scale = {20, 20, 20}
+uiManager:SetButtonStyle("custom", customButtonStyle)
 
+  local testBtn2 = SimpleButton(TestObjects.Pawn, "custom")
 
+  --local baseManager2 = UiManager()
+  --baseManager2:Debug()
+
+--[[
   testBtn:SetLabel("Test Label!"):SetFontSize(150):Resize(1000, 300)
   :Move(0, 1, -2):Rotate(0, 180, 0):Scale(5)
   :SetColor(0, 1, 0):SetFontColor(1):SetHoverColor(1, 0, 0):SetPressColor(0,0,1)
@@ -88,7 +101,8 @@ function onLoad()
   testBtn:test()
 
   testBtn:SetFunctionOwner(Global):SetClickFunction("myFunction")
-
+  ]]
+--testBtn:SetFunction()
 
 end
 

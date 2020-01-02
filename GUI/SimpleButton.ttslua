@@ -2,16 +2,22 @@ local SimpleButton = {}
 SimpleButton.__index = SimpleButton
 setmetatable(SimpleButton, {__call = function (cls, ...) return cls.New(...) end })
 
-function SimpleButton.New(init, attachedObject, styleTable)
+function SimpleButton.New(attachedObject, style)
   local self = setmetatable({}, SimpleButton)
 
-  if attachedObject == nil then PrintError("button attachedObject can't be nil."); return nil; end
-  if styleTable == nil then PrintError("button styleTable can't be nil."); return nil; end
+  if type(attachedObject) == "string" then attachedObject = GetObject(attachedObject) end
 
-  self._index = nil
+  if attachedObject == nil then PrintError("button attachedObject can't be nil."); return nil; end
+  if type(style) == "string" then
+    style = StaticUiManager:GetButtonStyle(style)
+  end
+  if style == nil then
+    style = StaticUiManager:GetButtonStyle(StaticDefaultButtonStyle)
+  end
+
   self._attachedObject = attachedObject;
 
-  self._attachedObject.createButton(styleTable)
+  self._attachedObject.createButton(style)
   self._index = self:GetIndex()
 
   return self
@@ -27,11 +33,6 @@ function SimpleButton:GetIndex()
   return self._index
 end
 
-
-function SimpleButton:test()
-  local allButtons = self._attachedObject.getButtons()
-  PrintObject("buttons", allButtons, 3)
-end
 
 function SimpleButton:SetLabel(label)
   if label == nil then label = "No label" end
@@ -196,6 +197,13 @@ function SimpleButton:SetTooltip(tooltip)
   })
   return self
 end
+
+--[[
+function SimpleButton:Debug()
+  local allButtons = self._attachedObject.getButtons()
+  PrintObject("buttons", allButtons, 3)
+end
+]]
 
 function _debugButtonClick()
     print('Button click!')
