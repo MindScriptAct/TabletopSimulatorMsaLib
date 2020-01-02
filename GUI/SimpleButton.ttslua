@@ -1,23 +1,202 @@
-local SimpleButton = {} -- the table representing the class, which will double as the metatable for the instances
-SimpleButton.__index = SimpleButton -- failed table lookups on the instances should fallback to the class table, to get methods
+local SimpleButton = {}
+SimpleButton.__index = SimpleButton
+setmetatable(SimpleButton, {__call = function (cls, ...) return cls.New(...) end })
 
-setmetatable(SimpleButton, {
-  __call = function (cls, ...)
-    return cls.new(...)
-  end,
-})
-
--- syntax equivalent to "MyClass.new = function..."
-function SimpleButton.new(init)
+function SimpleButton.New(init, attachedObject, styleTable)
   local self = setmetatable({}, SimpleButton)
-  self.value = init
+
+  if attachedObject == nil then PrintError("button attachedObject can't be nil."); return nil; end
+  if styleTable == nil then PrintError("button styleTable can't be nil."); return nil; end
+
+  self._index = nil
+  self._attachedObject = attachedObject;
+
+  self._attachedObject.createButton(styleTable)
+  self._index = self:GetIndex()
+
   return self
 end
 
-function SimpleButton.set_value(self, newval)
-  self.value = newval
+function SimpleButton:GetIndex()
+  if self._index == nil then
+    local allButtons = self._attachedObject.getButtons()
+    for buttonNr, button in pairs(allButtons) do
+      self._index = button.index
+    end
+  end
+  return self._index
 end
 
-function SimpleButton.get_value(self)
-  return self.value
+
+function SimpleButton:test()
+  local allButtons = self._attachedObject.getButtons()
+  PrintObject("buttons", allButtons, 3)
+end
+
+function SimpleButton:SetLabel(label)
+  if label == nil then label = "No label" end
+  self._attachedObject.editButton({
+    index = self._index,
+    label = label
+  })
+  return self
+end
+
+function SimpleButton:SetFunctionOwner(functionOwner)
+  if functionOwner == nil then functionOwner = Global end
+  self._attachedObject.editButton({
+    index = self._index,
+    function_owner = functionOwner
+  })
+  return self
+end
+
+function SimpleButton:SetClickFunction(clickFunction)
+  if clickFunction == nil then clickFunction = "_debugButtonClick" end
+  self._attachedObject.editButton({
+    index = self._index,
+    click_function = clickFunction
+  })
+  return self
+end
+
+function SimpleButton:SetFontSize(fontSize)
+  if fontSize == nil then fontSize = 100 end
+  self._attachedObject.editButton({
+    index = self._index,
+    font_size = fontSize
+  })
+  return self
+end
+
+function SimpleButton:SetWidth(width)
+  if width == nil then width = 100 end
+  self._attachedObject.editButton({
+    index = self._index,
+    width = width
+  })
+  return self
+end
+
+function SimpleButton:SetHeight(height)
+  if height == nil then height = 100 end
+  self._attachedObject.editButton({
+    index = self._index,
+    height = height
+  })
+  return self
+end
+
+function SimpleButton:Resize(width, height)
+  if width == nil then width = 100 end
+  if height == nil then height = 100 end
+  self._attachedObject.editButton({
+    index = self._index,
+    height = height,
+    width = width
+  })
+  return self
+end
+
+function SimpleButton:Move(x, y, z)
+  if x == nil then x = 0 end
+  if y == nil then y = x end
+  if z == nil then z = x end
+  self._attachedObject.editButton({
+    index = self._index,
+    position = {x, y, z}
+  });
+  return self;
+end
+
+function SimpleButton:Rotate(x, y, z)
+  if x == nil then x = 0 end
+  if y == nil then y = x end
+  if z == nil then z = x end
+  self._attachedObject.editButton({
+    index = self._index,
+    rotation = {x, y, z}
+  });
+  return self;
+end
+
+function SimpleButton:Scale(x, y, z)
+  if x == nil then x = 1 end
+  if y == nil then y = x end
+  if z == nil then z = x end
+  self._attachedObject.editButton({
+    index = self._index,
+    scale = {x, y, z}
+  });
+  return self;
+end
+
+function SimpleButton:SetColor(r, g, b, a)
+  if r == nil then r = 1 end
+  if g == nil then g = r end
+  if b == nil then b = r end
+  if a == nil then a = 1 end
+  self._attachedObject.editButton({
+    index = self._index,
+    color = {r, g, b, a}
+  });
+  return self;
+end
+
+function SimpleButton:SetFontColor(r, g, b, a)
+  if r == nil then r = 0 end
+  if g == nil then g = r end
+  if b == nil then b = r end
+  if a == nil then a = 1 end
+  self._attachedObject.editButton({
+    index = self._index,
+    font_color = {r, g, b, a}
+  });
+  return self;
+end
+
+function SimpleButton:SetHoverColor(r, g, b, a)
+  if r == nil then
+    self._attachedObject.editButton({
+      index = self._index,
+      hover_color = nil
+    });
+  end
+  if g == nil then g = r end
+  if b == nil then b = r end
+  if a == nil then a = 1 end
+  self._attachedObject.editButton({
+    index = self._index,
+    hover_color = {r, g, b, a}
+  });
+  return self;
+end
+
+function SimpleButton:SetPressColor(r, g, b, a)
+  if r == nil then
+    self._attachedObject.editButton({
+      index = self._index,
+      hover_color = nil
+    });
+  end
+  if g == nil then g = r end
+  if b == nil then b = r end
+  if a == nil then a = 1 end
+  self._attachedObject.editButton({
+    index = self._index,
+    press_color = {r, g, b, a}
+  });
+  return self;
+end
+
+function SimpleButton:SetTooltip(tooltip)
+  self._attachedObject.editButton({
+    index = self._index,
+    tooltip = tooltip
+  })
+  return self
+end
+
+function _debugButtonClick()
+    print('Button click!')
 end

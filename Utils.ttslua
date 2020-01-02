@@ -15,19 +15,29 @@ function PrintTable(table)
     end
 end
 
-function PrintObject(name, obj, tab)
-    if tab == nil then tab = "" end
-    local type = type(obj)
-    if type == "table" then
-        print(tab..name..":")
-        for key, value in pairs(obj) do
-          PrintObject(key, value, tab.."  ");
-        end
-    elseif  type == "string" or type == "number" then
-      print(tab..name..":"..obj)
+function PrintObject(name, obj, depth, tab)
+  if depth == nil then depth = 5 end
+  if tab == nil then tab = "" end
+  local type = type(obj)
+  if type == "table" then
+    if depth > 1 then
+      print(tab..name..":")
+      for key, value in pairs(obj) do
+        PrintObject(key, value, depth-1, tab.."  ");
+      end
     else
-      print(name.." not handled type:"..type)
+      local printString = "{"
+      for key, value in pairs(obj) do
+        printString = printString..key..":"..value..", "
+      end
+      printString = printString.."}"
+      print(tab..name..":"..printString)
     end
+  elseif  type == "string" or type == "number" then
+    print(tab..name..":"..obj)
+  else
+    print(name.." not handled type:"..type)
+  end
 end
 
 

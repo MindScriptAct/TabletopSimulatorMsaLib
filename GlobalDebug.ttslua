@@ -59,13 +59,13 @@ function onLoad()
 
 
   local buttonTable = {
-    label = "[Button]",
+    label = "[Button 1]",
     function_owner = Global,
-    click_function = "printHello",
-    font_size = 500,
-    width = 1000,
-    height = 300,
-    position = {0, 2, 0},
+    click_function = "_debugButtonClick",
+    font_size = 100,
+    width = 100,
+    height = 100,
+    position = {0, 0, 0},
     rotation = {0, 0, 0},
     scale = {1, 1, 1},
     color = {1, 1, 1},
@@ -76,17 +76,27 @@ function onLoad()
   };
 
 
-  local i = SimpleButton(5)
-  -- tbl:name(arg) is a shortcut for tbl.name(tbl, arg), except tbl is evaluated only once
-  print(i:get_value()) --> 5
-  i:set_value(6)
-  print(i:get_value()) --> 6
+  local testBtn = SimpleButton(5, GetObject(TestObjects.Cube), buttonTable)
+
+  testBtn:test()
+
+
+  testBtn:SetLabel("Test Label!"):SetFontSize(150):Resize(1000, 300)
+  :Move(0, 1, -2):Rotate(0, 180, 0):Scale(5)
+  :SetColor(0, 1, 0):SetFontColor(1):SetHoverColor(1, 0, 0):SetPressColor(0,0,1)
+
+  testBtn:test()
+
+  testBtn:SetFunctionOwner(Global):SetClickFunction("myFunction")
+
 
 end
 
-function printHello()
-    print('Hello test!')
+function myFunction()
+  print("my function clicked")
 end
+
+
 
 --[[ The onUpdate event is called once per frame. --]]
 function onUpdate()
