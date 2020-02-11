@@ -37,7 +37,7 @@ SimpleButton(ObjectId.TestObject, "My label", "myCustomFunction", ObjectId.Scrip
 local testObject = GetObject(ObjectId.TestObject)
 SimpleButton(testObject, "My label", "myFunction")
 ```
-#### all functions chained:
+#### all functions:
 ```lua
           local myButton = SimpleButton(value);
           myButton:SetLabel("My label!")
@@ -79,27 +79,27 @@ SimpleButton(testObject, "My label", "myFunction")
 ```lua
     local uiManager = UiManager()
 
-    local myDefaultStyle = uiManager:CloneButtonTable()
-    myDefaultStyle.label = "[My Button!]"
-    myDefaultStyle.function_owner = Global
-    myDefaultStyle.click_function = "myFunction"
-    myDefaultStyle.font_size = 200
-    myDefaultStyle.width = 1200
-    myDefaultStyle.height = 300
-    myDefaultStyle.position = {0, 1, -2}
-    myDefaultStyle.rotation = {0, 180, 0}
-    myDefaultStyle.scale = {2, 2, 2}
-    myDefaultStyle.color = {0.8, 0.8, 0.8}
-    myDefaultStyle.font_color = {0, 0, 0}
-    myDefaultStyle.hover_color = GetColor(Color.Blue)
-    myDefaultStyle.press_color = GetColor("#FF00FF", 0.5)
-    myDefaultStyle.tooltip = "my tooltip"
+    local myStyle = uiManager:CloneButtonTable()
+    myStyle.label = "[My Button!]"
+    myStyle.function_owner = Global
+    myStyle.click_function = "myFunction"
+    myStyle.font_size = 200
+    myStyle.width = 1200
+    myStyle.height = 300
+    myStyle.position = {0, 1, -2}
+    myStyle.rotation = {0, 180, 0}
+    myStyle.scale = {2, 2, 2}
+    myStyle.color = {0.8, 0.8, 0.8}
+    myStyle.font_color = {0, 0, 0}
+    myStyle.hover_color = GetColor(Color.Blue)
+    myStyle.press_color = GetColor("#FF00FF", 0.5)
+    myStyle.tooltip = "my tooltip"
 ```
 
 #### use default button style:
 
 ```lua
-    uiManager:SetButtonStyle(Static.DefaultStyleName, myDefaultStyle)
+    uiManager:SetButtonStyle(Static.DefaultStyleName, myStyle)
 
     SimpleButton(ObjectId.TestObject, "My label", "myCustomFunction", ObjectId.ScriptOwnerTest)
 ```
@@ -107,7 +107,7 @@ SimpleButton(testObject, "My label", "myFunction")
 #### use custom button style:
 
 ```lua
-    uiManager:SetButtonStyle("myStyleName", myDefaultStyle)
+    uiManager:SetButtonStyle("myStyleName", myStyle)
 
     SimpleButton(ObjectId.TestObject, "My label", "myCustomFunction", ObjectId.ScriptOwnerTest, "myStyleName")
 ```
