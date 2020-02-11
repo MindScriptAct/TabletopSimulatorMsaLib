@@ -2,7 +2,7 @@ local SimpleButton = {}
 SimpleButton.__index = SimpleButton
 setmetatable(SimpleButton, {__call = function (cls, ...) return cls.New(...) end })
 
-function SimpleButton.New(attachedObject, style)
+function SimpleButton.New(attachedObject, label, clickFunction, functionOwner, style)
   local self = setmetatable({}, SimpleButton)
 
   if type(attachedObject) == "string" then attachedObject = GetObject(attachedObject) end
@@ -12,13 +12,32 @@ function SimpleButton.New(attachedObject, style)
     style = StaticUiManager:GetButtonStyle(style)
   end
   if style == nil then
-    style = StaticUiManager:GetButtonStyle(StaticDefaultButtonStyle)
+    style = StaticUiManager:GetButtonStyle(Static.DefaultStyleName)
   end
 
   self._attachedObject = attachedObject;
-
   self._attachedObject.createButton(style)
   self._index = self:GetIndex()
+
+  if label ~= nil then
+      if type(label) == "string" then
+          self:SetLabel(label)
+      else
+          PrintError("buttons property 'label' must be string.");
+      end
+  end
+
+  if clickFunction ~= nil then
+      if type(clickFunction) == "string" then
+          self:SetClickFunction(clickFunction)
+      else
+          PrintError("buttons property 'clickFunction' must be string.");
+      end
+  end
+
+if clickFunction ~= nil then
+  self:SetFunctionOwner(functionOwner)
+end
 
   return self
 end
@@ -45,6 +64,7 @@ end
 
 function SimpleButton:SetFunctionOwner(functionOwner)
   if functionOwner == nil then functionOwner = Global end
+  if type(functionOwner) == "string" then functionOwner = GetObject(functionOwner) end
   self._attachedObject.editButton({
     index = self._index,
     function_owner = functionOwner
@@ -133,25 +153,17 @@ function SimpleButton:Scale(x, y, z)
 end
 
 function SimpleButton:SetColor(r, g, b, a)
-  if r == nil then r = 1 end
-  if g == nil then g = r end
-  if b == nil then b = r end
-  if a == nil then a = 1 end
-  self._attachedObject.editButton({
-    index = self._index,
-    color = {r, g, b, a}
-  });
+    self._attachedObject.editButton({
+      index = self._index,
+      color = GetColor(r, g, b, a)
+    });
   return self;
 end
 
 function SimpleButton:SetFontColor(r, g, b, a)
-  if r == nil then r = 0 end
-  if g == nil then g = r end
-  if b == nil then b = r end
-  if a == nil then a = 1 end
   self._attachedObject.editButton({
     index = self._index,
-    font_color = {r, g, b, a}
+    font_color = GetColor(r, g, b, a)
   });
   return self;
 end
@@ -163,12 +175,9 @@ function SimpleButton:SetHoverColor(r, g, b, a)
       hover_color = nil
     });
   end
-  if g == nil then g = r end
-  if b == nil then b = r end
-  if a == nil then a = 1 end
   self._attachedObject.editButton({
     index = self._index,
-    hover_color = {r, g, b, a}
+    hover_color = GetColor(r, g, b, a)
   });
   return self;
 end
@@ -180,12 +189,9 @@ function SimpleButton:SetPressColor(r, g, b, a)
       hover_color = nil
     });
   end
-  if g == nil then g = r end
-  if b == nil then b = r end
-  if a == nil then a = 1 end
   self._attachedObject.editButton({
     index = self._index,
-    press_color = {r, g, b, a}
+    press_color = GetColor(r, g, b, a)
   });
   return self;
 end
@@ -206,5 +212,5 @@ end
 ]]
 
 function _debugButtonClick()
-    print('Button click!')
+    print('Warning: Button function not set!')
 end
