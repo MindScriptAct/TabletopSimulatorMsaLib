@@ -1,0 +1,236 @@
+local Animation = {}
+Animation.__index = Animation
+setmetatable(Animation, {__call = function (cls, ...) return cls.New(...) end })
+
+function Animation.New(params)
+  local self = setmetatable({}, Animation)
+  -- constructor
+
+  return self
+end
+
+--##################################################################
+--       Single action functions
+--##################################################################
+
+--- Wait for all previous animations to finish, resets current animation time to 0 for delay paramater.
+function Animation:Await(onCompleteFunc)
+  print("TODO : Animation:Await")
+  return self
+end
+
+--##################################################################
+--       Single action functions
+--##################################################################
+
+--- Move items To new position
+function Animation:Move(target, position, delay, onCompleteFunc)
+  print("TODO : Animation:Move")
+  return self
+end
+
+--- Rotate item/items To new rotation
+function Animation:Rotate(target, rotation, delay, onCompleteFunc)
+  print("TODO : Animation:Rotate")
+  return self
+end
+
+--- Scale item/items To new scale
+function Animation:Scale(target, scale, delay, onCompleteFunc)
+  print("TODO : Animation:Scale")
+  return self
+end
+
+--- Transform item/items To new position AND rotation AND scale
+function Animation:Transform(target, position, rotation, scale, delay, onCompleteFunc)
+  print("TODO : Animation:Transform")
+  return self
+end
+
+--- Teleport item/items instantly To new position AND rotation AND scale
+function Animation:Teleport(target, position, rotation, scale, delay, onCompleteFunc)
+  print("TODO : Animation:Teleport")
+  return self
+end
+
+--- Flip item/items
+function Animation:Flip(target, delay, onCompleteFunc)
+  print("TODO : Animation:Flip")
+  return self
+end
+
+--- Sort item/items using custom sort function
+function Animation:Sort(target, sortFunc, delay, onCompleteFunc)
+  print("TODO : Animation:Sort")
+  return self
+end
+
+--- Shuffle items in container
+function Animation:Shuffle(target, delay, onCompleteFunc)
+  print("TODO : Animation:Shuffle")
+  return self
+end
+
+--- Lock item/items
+function Animation:Lock(target, delay, onCompleteFunc)
+  print("TODO : Animation:Lock")
+  return self
+end
+
+--- Unlock item/items
+function Animation:Unlock(target, delay, onCompleteFunc)
+  print("TODO : Animation:Unlock")
+  return self
+end
+
+--- Delete item/items
+function Animation:Delete(target, delay, onCompleteFunc)
+  print("TODO : Animation:Delete")
+  return self
+end
+
+--- execute specific function on object
+function Animation:Execute(target, delay, customFunc)
+  print("TODO : Animation:Execute")
+  return self
+end
+
+--- Draw to player one item from container
+function Animation:Draw(target, playerHand, delay, onCompleteFunc)
+  print("TODO : Animation:Draw")
+  return self
+end
+
+--- Draw to player many items from container
+function Animation:DrawMany(target, playerHand, amount, delay, onCompleteFunc)
+  print("TODO : Animation:DrawMany")
+  return self
+end
+
+--##################################################################
+--       Functions to prepare items for chaining
+--##################################################################
+
+--- Take one or many Items (for chaining)
+function Animation:Take(target, delay, onCompleteFunc, handleTargetFunc)
+  print("TODO : Animation:Take")
+  return self
+end
+
+--- Take one item from container (for chaining)
+function Animation:TakeFrom(target, delay, onCompleteFunc, handleTargetFunc)
+  print("TODO : Animation:TakeFrom")
+  return self
+end
+
+--- Take many items from container (for chaining)
+function Animation:TakeManyFrom(target, amount, delay, onCompleteFunc, handleTargetFunc)
+  print("TODO : Animation:TakeManyFrom")
+  return self
+end
+
+--- Clone one Item (for chaining)
+function Animation:Clone(target, delay, onCompleteFunc, handleTargetFunc)
+  print("TODO : Animation:Clone")
+  return self
+end
+
+--- Clone many copies (for chaining)
+function Animation:CloneMany(target, amount, delay, onCompleteFunc, handleTargetFunc)
+  print("TODO : Animation:CloneMany")
+  return self
+end
+
+--##################################################################
+--       Functions to chain previous command item/items
+--##################################################################
+
+--- pause before chaining previous command object/objects.
+function Animation:ThenPause(delay, onCompleteFunc)
+  print("TODO : Animation:ThenPause")
+  return self
+end
+
+--- Move items To new position
+-- chain previous command object/objects.
+function Animation:ThenMove(position, delay, onCompleteFunc)
+  print("TODO : Animation:ThenMove")
+  return self
+end
+
+--- Rotate item/items To new rotation
+-- chain previous command object/objects.
+function Animation:ThenRotate( rotation, delay, onCompleteFunc)
+  print("TODO : Animation:ThenRotate")
+  return self
+end
+
+--- Scale item/items To new scale
+-- chain previous command object/objects.
+function Animation:ThenScale(scale, delay, onCompleteFunc)
+  print("TODO : Animation:ThenScale")
+  return self
+end
+
+--- Transform item/items To new position AND rotation AND scale
+-- chain previous command object/objects.
+function Animation:ThenTransform(position, rotation, scale, delay, onCompleteFunc)
+  print("TODO : Animation:ThenTransform")
+  return self
+end
+
+--- Teleport item/items instantly To new position AND rotation AND scale
+-- chain previous command object/objects.
+function Animation:ThenTeleport(position, rotation, scale, delay, onCompleteFunc)
+  print("TODO : Animation:ThenTeleport")
+  return self
+end
+
+--- Flip item/items
+-- chain previous command object/objects.
+function Animation:ThenFlip(delay, onCompleteFunc)
+  print("TODO : Animation:ThenFlip")
+  return self
+end
+
+--- Sort item/items using custom sort function
+-- chain previous command container.
+function Animation:ThenSort(sortFunc, delay, onCompleteFunc)
+  print("TODO : Animation:ThenSort")
+  return self
+end
+
+--- Shuffle items in container
+-- chain previous command container.
+function Animation:ThenShuffle(delay, onCompleteFunc)
+  print("TODO : Animation:ThenShuffle")
+  return self
+end
+
+--- Lock item/items
+-- chain previous command object/objects.
+function Animation:ThenLock(delay, onCompleteFunc)
+  print("TODO : Animation:ThenLock")
+  return self
+end
+
+--- Unlock item/items
+-- chain previous command object/objects.
+function Animation:ThenUnlock(delay, onCompleteFunc)
+  print("TODO : Animation:ThenUnlock")
+  return self
+end
+
+--- Delete item/items
+-- chain previous command object/objects.
+function Animation:ThenDelete(delay, onCompleteFunc)
+  print("TODO : Animation:ThenDelete")
+  return self
+end
+
+--- execute specific function on object
+-- chain previous command object/objects.
+function Animation:ThenExecute(delay, customFunc)
+  print("TODO : Animation:ThenExecute")
+  return self
+end
