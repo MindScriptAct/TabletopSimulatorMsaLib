@@ -1,32 +1,47 @@
+local Animation = require("msa/Animating/Animation")
+
 local Animator = {}
 Animator.__index = Animator
 setmetatable(Animator, {__call = function (cls, ...) return cls.New(...) end })
 
 function Animator.New(params)
-  local self = setmetatable({}, Animator)
-  -- constructor
+    local self = setmetatable({}, Animator)
+    -- constructor
 
-  return self
+    return self
 end
 
 --- Cretes animation object, and returns it.
 function Animator:InitAnimation()
-  local animation = Animation()
+    local animation = Animation()
 
-  return animation
+    return animation
 end
 
 --- Start animation
 function Animator:Start(animation)
-  print("TODO : Animator starts animation.")
+    print("TODO : Animator starts animation.")
+
+    --PrintObject(animation, "animation")
+
+    print(animation._objectCount)
+    print(animation._currentStep)
+
+    for idx, value in ipairs(animation._objectArray) do
+        print(" ---------------- "..idx)
+        PrintObject(value, "data "..idx)
+    end
 end
 
 --- Stop animation
 function Animator:Stop(animation)
-  print("TODO : Animator Stops animation.")
+    print("TODO : Animator Stops animation.")
 end
 
 --- Stop All animations
 function Animator:StopAll()
-  print("TODO : Animator StopAll animation.")
+    print("TODO : Animator StopAll animation.")
 end
+
+
+return Animator

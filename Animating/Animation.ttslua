@@ -1,12 +1,48 @@
+require("msa/Core")
+
+
 local Animation = {}
 Animation.__index = Animation
 setmetatable(Animation, {__call = function (cls, ...) return cls.New(...) end })
 
-function Animation.New(params)
-  local self = setmetatable({}, Animation)
-  -- constructor
+--##################################################################
+--       constructor
+--##################################################################
 
-  return self
+local Action = readonly {
+    Await = "Await",
+    Delay = "Delay",
+    Execute = "Execute",
+    Take = "Take",
+    TakeFrom = "TakeFrom",
+    Clone = "clone",
+    Move = "Move",
+    MoveTo = "MoveTo",
+    Rotate = "Rotate",
+    Scale = "Scale",
+    Transform = "Transform",
+    Teleport = "Teleport",
+    Flip = "Flip",
+    Sort = "Sort",
+    Shuffle = "Shuffle",
+    Lock = "Lock",
+    Unlock = "Unlock",
+    Delete = "Delete",
+    Draw = "Draw",
+    Deal = "Deal"
+}
+--##################################################################
+--       constructor
+--##################################################################
+
+function Animation.New(params)
+    local self = setmetatable({}, Animation)
+    -- constructor
+    self._objectArray = {};
+    self._objectCount = 0;
+    self._currentStep = 0;
+
+    return self
 end
 
 --##################################################################
@@ -15,21 +51,21 @@ end
 
 --- Wait for all previous animations to finish
 function Animation:Await(onCompleteFunc)
-  print("TODO : Animation:Await")
-  return self
+    print("TODO : Animation:Await")
+    return self
 end
 
 --- Delay current animation
 function Animation:Delay(seconds)
-  print("TODO : Animation:Delay")
-  return self
- end
+    print("TODO : Animation:Delay")
+    return self
+end
 
- --- function to execute then all previous commands are finished. (function gets array of animated objects as parameter.)
- function Animation:Execute(onCompleteFunc)
-   print("TODO : Animation:Execute")
-   return self
- end
+--- function to execute then all previous commands are finished. (function gets array of animated objects as parameter.)
+function Animation:Execute(onCompleteFunc)
+    print("TODO : Animation:Execute")
+    return self
+end
 
 --##################################################################
 --       Functions to prepare items for chaining
@@ -37,109 +73,159 @@ function Animation:Delay(seconds)
 
 --- Take one or many Items (for chaining)
 function Animation:Take(...)
-  print("TODO : Animation:Take")
-  return self
+    print("TODO : Animation:Take")
+    return self
 end
 
 --- Take items from container (for chaining)
 function Animation:TakeFrom(container, amount)
-  print("TODO : Animation:TakeFrom")
-  return self
+    print("TODO : Animation:TakeFrom")
+    return self
 end
 
 --- Clone one or many Items (for chaining)
-function Animation:Clone(...)
-  print("TODO : Animation:Clone")
-  return self
+function Animation:Clone(target, amount)
+    --print("TODO : Animation:Clone")
+    --PrintObject(target, "clone")
+    if type(target) == "string" then target = getObjectFromGUID(target) end
+    if target == nil then PrintError("Animation:Clone parameter target can't be nil.") return self end
+    amount = amount or 1
+    for i = 1, amount do
+        self._objectCount = self._objectCount + 1
+        self._objectArray[self._objectCount] = {
+            action = Action.Clone,
+            target = target,
+            amount = amount,
+            targetInteractable = target.interactable
+        }
+    end
+    target.interactable = false;
+    return self
 end
+
 
 --##################################################################
 --       Single action chaining functions
 --##################################################################
 
-
-
 --- Move items To new position
-function Animation:Move(x, y, z)
-  print("TODO : Animation:Move")
-  return self
+function Animation:Move(position)
+    --print("TODO : Animation:Move")
+    if type(position) ~= "table" then PrintError("Animation:Move position must be table."); return self; end
+
+    local x = position["x"] or position[1]
+    local y = position["y"] or position[2]
+    local z = position["z"] or position[3]
+
+    if type(x) ~= "number" then PrintError("Animation:Move position must have x number in table."); return self; end
+    if type(y) ~= "number" then PrintError("Animation:Move position must have y number in table."); return self; end
+    if type(z) ~= "number" then PrintError("Animation:Move position must have z number in table."); return self; end
+
+    self._objectCount = self._objectCount + 1
+    self._objectArray[self._objectCount] = {
+        action = Action.Move,
+        target = {x, y, z}
+    }
+    return self
 end
 
 --- Move items To object
-function Animation:MoveTo(object)
-  print("TODO : Animation:Move")
-  return self
+function Animation:MoveTo(target)
+    --print("TODO : Animation:MoveTo target : "..type(target))
+    if type(target) == "string" then
+        target = GetObject(target)
+    end
+    if type(target) ~= "userdata" then PrintError("Animation:MoveTo target must be valid object."); return self; end
+    self._objectCount = self._objectCount + 1
+    self._objectArray[self._objectCount] = {
+        action = "moveTo",
+        target = target,
+        targetInteractable = target.interactable
+    }
+    target.interactable = false;
+    return self
 end
 
 --- Rotate item/items To new rotation
 function Animation:Rotate(x, y, z)
-  print("TODO : Animation:Rotate")
-  return self
+    print("TODO : Animation:Rotate")
+    return self
 end
 
 --- Scale item/items To new scale
 function Animation:Scale(scale)
-  print("TODO : Animation:Scale")
-  return self
+    print("TODO : Animation:Scale")
+    return self
 end
 
 
 --- Transform item/items To new position AND rotation AND scale
 function Animation:Transform(position, rotation, scale)
-  print("TODO : Animation:Transform")
-  return self
+    print("TODO : Animation:Transform")
+    return self
 end
 
 --- Teleport item/items instantly To new position AND rotation AND scale
 function Animation:Teleport(position, rotation, scale)
-  print("TODO : Animation:Teleport")
-  return self
+    print("TODO : Animation:Teleport")
+    return self
 end
 
 --- Flip item/items
 function Animation:Flip()
-  print("TODO : Animation:Flip")
-  return self
+    print("TODO : Animation:Flip")
+    return self
 end
 
 --- Sort item/items using custom sort function
 function Animation:Sort(sortFunc)
-  print("TODO : Animation:Sort")
-  return self
+    print("TODO : Animation:Sort")
+    return self
 end
 
 --- Shuffle items in container
 function Animation:Shuffle()
-  print("TODO : Animation:Shuffle")
-  return self
+    print("TODO : Animation:Shuffle")
+    return self
 end
 
 --- Lock item/items
 function Animation:Lock()
-  print("TODO : Animation:Lock")
-  return self
+    print("TODO : Animation:Lock")
+    return self
 end
 
 --- Unlock item/items
 function Animation:Unlock()
-  print("TODO : Animation:Unlock")
-  return self
+    print("TODO : Animation:Unlock")
+    return self
 end
 
 --- Delete item/items
 function Animation:Delete()
-  print("TODO : Animation:Delete")
-  return self
+    print("TODO : Animation:Delete")
+    return self
 end
 
 --- Draw to player
 function Animation:Draw(player, amount)
-  print("TODO : Animation:Draw")
-  return self
+    print("TODO : Animation:Draw")
+    return self
 end
 
 --- Deal to all players
 function Animation:Deal(amount)
-  print("TODO : Animation:Deal")
-  return self
+    print("TODO : Animation:Deal")
+    return self
 end
+
+--##################################################################
+--       Inner works
+--##################################################################
+
+--- Move items To new position
+function Animation:GetObjectCount()
+    return self._objectCount;
+end
+
+return Animation
