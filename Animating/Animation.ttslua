@@ -1,36 +1,13 @@
 require("msa/Core")
 
 
+local AnimAction = require("msa/Animating/AnimAction")
+
 local Animation = {}
 Animation.__index = Animation
 setmetatable(Animation, {__call = function (cls, ...) return cls.New(...) end })
 
---##################################################################
---       constructor
---##################################################################
 
-local Action = readonly {
-    Await = "Await",
-    Delay = "Delay",
-    Execute = "Execute",
-    Take = "Take",
-    TakeFrom = "TakeFrom",
-    Clone = "clone",
-    Move = "Move",
-    MoveTo = "MoveTo",
-    Rotate = "Rotate",
-    Scale = "Scale",
-    Transform = "Transform",
-    Teleport = "Teleport",
-    Flip = "Flip",
-    Sort = "Sort",
-    Shuffle = "Shuffle",
-    Lock = "Lock",
-    Unlock = "Unlock",
-    Delete = "Delete",
-    Draw = "Draw",
-    Deal = "Deal"
-}
 --##################################################################
 --       constructor
 --##################################################################
@@ -38,9 +15,9 @@ local Action = readonly {
 function Animation.New(params)
     local self = setmetatable({}, Animation)
     -- constructor
-    self._objectArray = {};
-    self._objectCount = 0;
-    self._currentStep = 0;
+    self.animationArray = {};
+    self.stepCount = 0;
+    self.currentStep = 0;
 
     return self
 end
@@ -91,9 +68,9 @@ function Animation:Clone(target, amount)
     if target == nil then PrintError("Animation:Clone parameter target can't be nil.") return self end
     amount = amount or 1
     for i = 1, amount do
-        self._objectCount = self._objectCount + 1
-        self._objectArray[self._objectCount] = {
-            action = Action.Clone,
+        self.stepCount = self.stepCount + 1
+        self.animationArray[self.stepCount] = {
+            action = AnimAction.Clone,
             target = target,
             amount = amount,
             targetInteractable = target.interactable
@@ -121,9 +98,9 @@ function Animation:Move(position)
     if type(y) ~= "number" then PrintError("Animation:Move position must have y number in table."); return self; end
     if type(z) ~= "number" then PrintError("Animation:Move position must have z number in table."); return self; end
 
-    self._objectCount = self._objectCount + 1
-    self._objectArray[self._objectCount] = {
-        action = Action.Move,
+    self.stepCount = self.stepCount + 1
+    self.animationArray[self.stepCount] = {
+        action = AnimAction.Move,
         target = {x, y, z}
     }
     return self
@@ -136,9 +113,9 @@ function Animation:MoveTo(target)
         target = GetObject(target)
     end
     if type(target) ~= "userdata" then PrintError("Animation:MoveTo target must be valid object."); return self; end
-    self._objectCount = self._objectCount + 1
-    self._objectArray[self._objectCount] = {
-        action = "moveTo",
+    self.stepCount = self.stepCount + 1
+    self.animationArray[self.stepCount] = {
+        action = AnimAction.MoveTo,
         target = target,
         targetInteractable = target.interactable
     }
@@ -225,7 +202,7 @@ end
 
 --- Move items To new position
 function Animation:GetObjectCount()
-    return self._objectCount;
+    return self.stepCount;
 end
 
 return Animation
