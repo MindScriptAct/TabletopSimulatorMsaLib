@@ -24,12 +24,11 @@ function Animator:Start(animation)
 
     --PrintObject(animation, "animation")
 
-    for idx, animation in ipairs(animation.animationArray) do
-
-
+    for idx, anim in ipairs(animation.animationArray) do
+        --print()
         print(idx)
         print(" ---------------- ")
-        PrintObject(animation, "data "..idx)
+        PrintObject(anim, "data "..idx)
     end
 end
 
