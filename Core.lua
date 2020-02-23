@@ -8,12 +8,6 @@ function readonly(table)
     });
 end
 
-function GetObject(id)
-    local obj = getObjectFromGUID(id)
-    if obj == nil then PrintError("Failed to find object with id: "..id) end
-    return obj;
-end
-
 function GetObjectByName(name)
     PrintError("TODO : GetObjectByName")
     PrintError("Failed to find object with name: "..name)
@@ -22,6 +16,12 @@ end
 
 function PrintError(msg)
     broadcastToAll(" ERROR : "..msg, {r = 1, g = 0.2, b = 0.2})
+end
+
+function GetObject(id)
+    local obj = getObjectFromGUID(id)
+    if obj == nil then PrintError("Failed to find object with id: "..id) end
+    return obj;
 end
 
 
